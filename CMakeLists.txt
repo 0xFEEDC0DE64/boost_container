@@ -2,6 +2,8 @@
 # Distributed under the Boost Software License, Version 1.0.
 # https://www.boost.org/LICENSE_1_0.txt
 
+if(NOT DEFINED IDF_TARGET)
+
 cmake_minimum_required(VERSION 3.5...3.16)
 
 project(boost_container VERSION "${BOOST_SUPERPROJECT_VERSION}" LANGUAGES C CXX)
@@ -47,5 +49,31 @@ endif()
 if(BUILD_TESTING AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/test/CMakeLists.txt")
 
   add_subdirectory(test)
+
+endif()
+
+else()
+
+idf_component_register(
+    SRCS
+#        src/alloc_lib.c
+#        src/dlmalloc.cpp
+        src/global_resource.cpp
+        src/monotonic_buffer_resource.cpp
+        src/pool_resource.cpp
+#        src/synchronized_pool_resource.cpp
+#        src/unsynchronized_pool_resource.cpp
+    INCLUDE_DIRS
+        include
+    REQUIRES
+        boost_assert
+        boost_config
+        boost_core
+        boost_intrusive
+        boost_move
+        boost_static_assert
+        boost_type_traits
+#        boost_winapi
+)
 
 endif()
